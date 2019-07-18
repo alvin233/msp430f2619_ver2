@@ -14,7 +14,7 @@
 /* by-selection TB, output port is P4.1 and P4.2 */
 //#define TB
 /*******************************/
-/* deletel a  hello */
+/* a  hello */
 void initClockTo16MHz()
 {
 #ifdef DCO
