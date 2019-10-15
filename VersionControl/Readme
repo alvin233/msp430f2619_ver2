@@ -6,6 +6,13 @@ Date: 201907151212
 Modified by: alvin
 /******************/
 /******************/
+Version: 1.7 
+Date: 201910151144
+Modified by: alvin
+Add one port P6.6, control PWM output serial;
+Add time delay funcion, by loops;
+/******************/
+/******************/
 Version: 1.6 
 Date: 201907151212
 Modified by: alvin
