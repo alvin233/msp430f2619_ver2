@@ -9,6 +9,17 @@ EXAMPLE TEMPLATE
 1. 
 
 ////////////////////////////////
+
+////////////////////////////////
+
+* Version: 1.7
+* Date: D20191015T1200
+* Modified by: alvin
+1. Add one port, P6.6, for the control of PWM output;
+1. Add delay_ms() function;
+
+////////////////////////////////
+
 * Version: 1.6 
 * Date: 201907151212 
 * Modified by: alvin
