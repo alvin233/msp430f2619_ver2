@@ -3,6 +3,7 @@
 #include <stdint.h>
 #include "AD9833_H.h"
 #include "usart_h.h"
+void delay_ms(unsigned int _cnt);
 //******************************************************************************
 // Device Initialization *******************************************************
 /**********************************************************************************/
@@ -45,8 +46,10 @@ void initClockTo16MHz()
     BCSCTL2 |= DIVS_0; /* SMCLK Divider 0: /1 */
 #endif
 }
+
 void initGPIO()
 {
+    P6DIR |= BIT6;
     /* LED GPIO */
     P4DIR = BIT0;
     /* UART0 GPIO */
@@ -105,14 +108,27 @@ void initGPIO()
 void initPWM()
 {
     static const unsigned char Val = 0;  /* serve as dead time */
-    static const unsigned int period = 400; /* PWM period period = CLK_freq / (2*output_freq) on account of MC_3 mode */
+    unsigned int period = 400; /* PWM period period = CLK_freq / (2*output_freq) on account of MC_3 mode */
 #ifdef TA
+    P6OUT |= BIT6;
+    /* delay 1ms */
+    delay_ms(1);
     TACCR0 = period - 1; /* PWM period */
     TACCTL1 |= OUTMOD_6; /* output mode 6- PWM toggle/set */
     TACCR1 = 200 - Val; /* SET pwm duty cycle */
     TACCTL2 |= OUTMOD_2;  /* PWM output mode: 2 - PWM toggle/reset */
     TACCR2 = 200 + Val; /* SET pwm duty cycle */
     TACTL |= TASSEL_2 + MC_1; /* SMCLK as CLK,  */
+    /* delay 60ms */
+   delay_ms(60);
+   /* change period */
+   period = 800;
+   TACCR0 = period - 1; /* PWM period */
+   TACCTL1 |= OUTMOD_6; /* output mode 6- PWM toggle/set */
+   TACCR1 = 400 - Val; /* SET pwm duty cycle */
+   TACCTL2 |= OUTMOD_2;  /* PWM output mode: 2 - PWM toggle/reset */
+   TACCR2 = 400 + Val; /* SET pwm duty cycle */
+   TACTL |= TASSEL_2 + MC_1; /* SMCLK as CLK,  */
 #endif
 #ifdef TB
     TBCCR0 = period - 1;
@@ -167,7 +183,6 @@ void main()
     delay_us(255);
     delay_us(255);
     intiAD9833(1400,0,SIN_WAVE,0 );   //1.4MHz = 1400 kHz,  频率寄存器0，正弦波输出 ,初相位0 */
-
     __bis_SR_register(LPM0_bits + GIE);       // Since SMCLK is source, enter LPM0, interrupts enabled
 
 }
@@ -254,5 +269,19 @@ void __attribute__ ((interrupt(USCIAB1RX_VECTOR))) USCI1RX_ISR (void)
     }
     P2IFG &= ~BIT1;
     count++;
+}
+
+void delay_ms(unsigned int _cnt)
+{
+    unsigned int cnt = _cnt;
+    unsigned int tmp = 999;
+    unsigned int tmp1 = 9;
+    while (cnt--)
+    {
+        while(tmp--)
+        {
+            while(tmp1--);
+        }
+    }
 }
 
