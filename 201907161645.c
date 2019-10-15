@@ -45,7 +45,6 @@ void initClockTo16MHz()
     BCSCTL2 |= DIVS_0; /* SMCLK Divider 0: /1 */
 #endif
 }
-
 void initGPIO()
 {
     /* LED GPIO */
